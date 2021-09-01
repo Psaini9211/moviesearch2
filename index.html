@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Rating</title>
+    <style>
+        *{
+            margin:0px;
+            padding:0px;
+        }
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+            font-size:20px;
+            background-color: rgb(236, 236, 236);
+        }
+        #header{
+            width:100%;
+            height: 200px;
+            background-color: black;
+            text-align: center;
+        }
+        input{
+            margin-top: 50px;
+            width:200px;
+            height: 30px;
+            margin-left: -200px;
+        }
+        div form{
+            padding-top: 80px;
+        }
+        button{
+            margin-left: 50px;
+            height:30px;
+            width: 80px;
+            background-color: green;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #container{
+            display: none;
+            width:600px;
+            height: auto;
+            margin-top: 20px;
+            float: left;
+        }
+        table{
+            border:2px solid black;
+        }
+        tr{
+           text-align: center;
+            height:50px;
+        }
+        td{
+          border-bottom: 1px solid black;
+           border-right: 1px solid black;
+          width:600px;
+        }
+        #image{
+            float: right;
+            width:45%;
+            height: auto;
+            margin-top:20px;
+            margin-left: 50px;
+            display: none;
+        }
+        #error{
+            margin-top:30px;
+            margin-left: 35%;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <form>
+      <input placeholder="Enter Movie Name" type="text" id="movie">
+      <button onclick="getMovieDetails(event)">Continue</button>
+
+     
+    </form>
+    </div>
+    <div id="container">
+      <table>
+          <tbody>
+              <tr>
+                <td>Title</td>
+                <td id="Title"></td>
+              </tr>
+            <tr>
+                <td>Year</td>
+                <td id="Year"></td>
+            </tr>
+            <tr>
+                <td>Rated</td>
+                <td id="Rated"></td>
+            </tr>
+            <tr>
+                <td>Actor</td>
+                <td id="Actor"></td>
+            </tr>
+            <tr>
+                <td>Released</td>
+                <td id="Released"></td>
+            </tr>
+            <tr>
+                <td>Director</td>
+                <td id="Director"></td>
+            </tr>
+            <tr>
+                <td>BoxOffice</td>
+                <td id="BoxOffice"></td>
+            </tr>
+            <tr>
+                <td >Language</td>
+                <td id="Language"></td>
+            </tr>
+            <tr>
+                <td>Runtime</td>
+                <td  id="Runtime"></td>
+            </tr>
+          </tbody>
+      </table>
+        
+    </div>
+    <div id="image">
+     <img id="poster" >
+    </div>
+        <div id="error">
+
+        </div>
+    <script>
+    function getMovieDetails(event){
+        event.preventDefault()    
+        async function MovieRating(){
+        var movie_name = document.getElementById("movie").value;
+        try{
+        var responce = await fetch(`HTTPS://www.omdbapi.com/?t=${movie_name}&apikey=17249d03`);
+        var data = await responce.json();
+       
+        if(movie_name !== data.Title){
+          
+            errorShow(data)
+       
+        }
+        else{
+          displayMovie(data)
+        }    
+        } catch(error){
+          
+        }
+
+    
+    }
+    MovieRating()
+     
+}
+
+
+function displayMovie(data){
+    var Error = document.getElementById("error")
+    Error.style.display = "none"
+    var image_div = document.getElementById("image")
+    image_div.style.display = "inline-block"
+    var main_container = document.getElementById("container")
+     main_container.style.display = "inline-block"
+    var Title = document.getElementById("Title")
+    Title.innerHTML = data.Title
+
+     var Year = document.getElementById("Year")
+    Year.innerHTML = data.Year
+
+     var Rated = document.getElementById("Rated")
+    Rated.innerHTML = data.Rated
+
+     var Actor = document.getElementById("Actor")
+    Actor.innerHTML = data.Actors
+
+     var Released = document.getElementById("Released")
+    Released.innerHTML = data.Released
+
+     var Director = document.getElementById("Director")
+    Director.innerHTML = data.Director
+
+     var BoxOffice = document.getElementById("BoxOffice")
+    BoxOffice.innerHTML = data.BoxOffice
+
+     var Language = document.getElementById("Language")
+    Language.innerHTML = data.Language
+
+     var Runtime = document.getElementById("Runtime")
+    Runtime.innerHTML = data.Runtime
+
+    var poster = document.getElementById("poster")
+    poster.src = data.Poster
+
+}
+function errorShow(data){
+    var image_div = document.getElementById("image")
+    image_div.style.display = "none"
+         var main_container = document.getElementById("container")
+    main_container.style.display = "none"
+        var Error = document.getElementById("error")
+        Error.style.display = "inline-block"
+        var error_img = document.createElement("img")
+     error_img.src = "error.png"
+
+    Error.append(error_img)
+}
+    </script>
+</body>
+</html>
